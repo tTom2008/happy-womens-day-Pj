@@ -3,7 +3,7 @@
 // ==========================================
 
 const PROFILE_1 = {
-    pin: "0803",          // Mã PIN người thứ 1
+    pin: "2008",          // Mã PIN người thứ 1
     theme: "green",       // Tone màu mặc định (Xanh lá)
     vidHeader: "Phượng's Video",
     vidSrc: "pj.mp4",
@@ -13,7 +13,7 @@ const PROFILE_1 = {
 };
 
 const PROFILE_2 = {
-    pin: "0909",          // Mã PIN cho Phượng (Bạn có thể đổi tùy ý)
+    pin: "1506",          // Mã PIN cho Phượng (Bạn có thể đổi tùy ý)
     theme: "pink",        // Tone màu sẽ tự chuyển sang Hồng
     vidHeader: "Phương's Video",
     vidSrc: "p.mp4", // Đổi tên video mặc định của bạn ở đây
@@ -188,4 +188,16 @@ function toggleFullscreen() {
     } else {
         expandIcon.innerHTML = "⛶";
     }
+}
+
+
+
+function openGiftModal() {
+    document.getElementById("gift-modal").classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+}
+
+function closeGiftModal() {
+    document.getElementById("gift-modal").classList.add("hidden");
+    document.body.style.overflow = "";
 }
