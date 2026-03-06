@@ -157,49 +157,35 @@ document.body.addEventListener('click', () => {
         isMusicStarted = true;
     }
 });
-
 function openModal(modalId) {
     document.getElementById(modalId).classList.remove("hidden");
-    
     const introMusic = document.getElementById("intro-music");
-    const giftMusic = document.getElementById("gift-music");
 
     if(modalId === 'letter-modal') {
         startTypewriter();
     }
     
-    // Khi mở Video: Tạm tắt nhạc Intro để không bị lẫn tiếng
-    if(modalId === 'video-modal') {
+    if(modalId === 'video-modal' || modalId === 'gift-modal') {
+        // Tạm tắt nhạc Intro để xem Video hoặc để chuẩn bị mở Quà
         introMusic.pause();
-    }
-
-    // Khi mở Gift: Tắt nhạc Intro, Bật nhạc Gift
-    if(modalId === 'gift-modal') {
-        introMusic.pause();
-        giftMusic.volume = 0.8; // Nhạc gift to hơn chút cho bùng nổ
-        giftMusic.play();
     }
 }
 
 function closeModal(modalId) {
     document.getElementById(modalId).classList.add("hidden");
-    
     const introMusic = document.getElementById("intro-music");
-    const giftMusic = document.getElementById("gift-music");
 
     if(modalId === 'video-modal') {
         const video = document.getElementById("my-video");
         video.pause();
         document.getElementById("play-pause-btn").innerHTML = "▶";
-        
-        // Đóng video thì bật lại nhạc Intro
-        introMusic.play(); 
+        introMusic.play(); // Bật lại intro
     }
 
     if(modalId === 'gift-modal') {
-        // Đóng Gift thì tắt nhạc Gift, bật lại nhạc Intro
-        giftMusic.pause();
-        giftMusic.currentTime = 0; // Tua nhạc gift về lại từ đầu
-        introMusic.play();
+        introMusic.play(); // Bật lại intro
+        
+        // DÒNG NÀY RẤT QUAN TRỌNG: Reset lại hộp quà để tắt nhạc hoa và chuẩn bị cho lần mở sau!
+        document.querySelector("#flower-container iframe").src = "Gift.html";
     }
 }
