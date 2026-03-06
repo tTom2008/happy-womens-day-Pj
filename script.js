@@ -63,24 +63,6 @@ function checkPin() {
         updateDots();
     }
 }
-
-// --- LOGIC MODAL & TYPEWRITER ---
-function openModal(modalId) {
-    document.getElementById(modalId).classList.remove("hidden");
-    if(modalId === 'letter-modal') {
-        startTypewriter();
-    }
-}
-
-function closeModal(modalId) {
-    document.getElementById(modalId).classList.add("hidden");
-    if(modalId === 'video-modal') {
-        const video = document.getElementById("my-video");
-        video.pause();
-        document.getElementById("play-pause-btn").innerHTML = "▶";
-    }
-}
-
 let typeIndex = 0;
 let isTyping = false;
 
@@ -161,5 +143,63 @@ function toggleFullscreen() {
         expandIcon.innerHTML = "🗗";
     } else {
         expandIcon.innerHTML = "⛶";
+    }
+}
+// --- LOGIC MODAL, TYPEWRITER & MUSIC ---
+
+// 1. Tự động bật nhạc Intro ngay khi chạm vào web (bấm mã PIN)
+let isMusicStarted = false;
+document.body.addEventListener('click', () => {
+    if (!isMusicStarted) {
+        const introMusic = document.getElementById("intro-music");
+        introMusic.volume = 0.5; // Chỉnh âm lượng nhạc nền 50%
+        introMusic.play().catch(e => console.log("Đang chờ tương tác..."));
+        isMusicStarted = true;
+    }
+});
+
+function openModal(modalId) {
+    document.getElementById(modalId).classList.remove("hidden");
+    
+    const introMusic = document.getElementById("intro-music");
+    const giftMusic = document.getElementById("gift-music");
+
+    if(modalId === 'letter-modal') {
+        startTypewriter();
+    }
+    
+    // Khi mở Video: Tạm tắt nhạc Intro để không bị lẫn tiếng
+    if(modalId === 'video-modal') {
+        introMusic.pause();
+    }
+
+    // Khi mở Gift: Tắt nhạc Intro, Bật nhạc Gift
+    if(modalId === 'gift-modal') {
+        introMusic.pause();
+        giftMusic.volume = 0.8; // Nhạc gift to hơn chút cho bùng nổ
+        giftMusic.play();
+    }
+}
+
+function closeModal(modalId) {
+    document.getElementById(modalId).classList.add("hidden");
+    
+    const introMusic = document.getElementById("intro-music");
+    const giftMusic = document.getElementById("gift-music");
+
+    if(modalId === 'video-modal') {
+        const video = document.getElementById("my-video");
+        video.pause();
+        document.getElementById("play-pause-btn").innerHTML = "▶";
+        
+        // Đóng video thì bật lại nhạc Intro
+        introMusic.play(); 
+    }
+
+    if(modalId === 'gift-modal') {
+        // Đóng Gift thì tắt nhạc Gift, bật lại nhạc Intro
+        giftMusic.pause();
+        giftMusic.currentTime = 0; // Tua nhạc gift về lại từ đầu
+        introMusic.play();
     }
 }
